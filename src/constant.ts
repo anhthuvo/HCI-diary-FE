@@ -10,3 +10,57 @@ export const initialQuestion = {
       "sfs"
     ]
   }
+export const EMOTIONS = {
+  "positive": [
+    {
+      icon: '/assets/emotion-icon-happy.webp',
+      label: "happy",
+      selected: true,
+    },
+    {
+      icon: '/assets/emotion-icon-happy.webp',
+      label: "happy",
+      selected: false,
+    },
+    {
+      icon: '/assets/emotion-icon-happy.webp',
+      label: "happy",
+      selected: false,
+    }
+  ],
+  "negative": [
+    {
+      icon: '/assets/emotion-icon-happy.webp',
+      label: "happy",
+      selected: false,
+    },
+    {
+      icon: '/assets/emotion-icon-happy.webp',
+      label: "happy",
+      selected: false,
+    },
+    {
+      icon: '/assets/emotion-icon-happy.webp',
+      label: "happy",
+      selected: false,
+    }
+  ],
+  "neutral": [
+    {
+      icon: '/assets/emotion-icon-happy.webp',
+      label: "happy"
+    },
+    {
+      icon: '/assets/emotion-icon-happy.webp',
+      label: "happy"
+    },
+    {
+      icon: '/assets/emotion-icon-happy.webp',
+      label: "happy"
+    }
+  ]
+}
+
+export const BACKEND = {
+  DOMAIN: "https://diary-chatbot.adaptable.app"
+}

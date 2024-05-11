@@ -1,12 +1,20 @@
 import './App.css';
+import Journaling from './pages/Journaling';
 import Landing from './pages/Landing';
-import TableStore from './store/csvStore';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from 'react-router-dom';
 
 function App() {
   return (
-    <TableStore>
-        <Landing />
-    </TableStore>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Journaling />} />
+        <Route path="/journaling" element={<Journaling />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
