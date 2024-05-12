@@ -31,7 +31,7 @@ export const EMOTIONS = [
     options: [
       {
         label: "tired",
-        emoji: "😮‍💨",
+        emoji: "😣",
         selected: false,
       },
       {
