@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { BACKEND, BOX_COLORS, DIARY_STORAGE_KEY, MONTHS, QUESTIONS_STORAGE_KEY, WEEKDAYS, initialQuestion } from '../constant'
+import { BACKEND, DIARY_DURATION, DIARY_STORAGE_KEY, initialQuestion } from '../constant'
 import TextArea from 'antd/es/input/TextArea';
 import { ArrowLeftOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { formatDate } from './Landing';
 import { Link } from 'react-router-dom';
-import { Popconfirm, message } from 'antd';
+import { Popconfirm, Skeleton, message } from 'antd';
 import type { PopconfirmProps } from 'antd';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 interface IDiary {
     time: Date,
     content: string,
-    emotions: string[]
+    emotion?: string
 }
 
 interface IQuestion {
@@ -23,34 +24,35 @@ const Landing: React.FC = () => {
     const [diaries, setDiaries] = useState<IDiary[]>([])
     const [input, setInput] = useState('');
     const [editDiaryIndex, setEditDiaryIndex] = useState<number>(-1)
+    const [loading, setLoading] = useState(false)
+    const navigate = useNavigate();
 
     const save = () => {
         if (input === "") return
         const inputText = input.trim()
 
         const newDiaries = [...diaries]
-         // user edit
+        // user edit diary
         if (editDiaryIndex > -1) {
             const newDiaries = [...diaries]
             newDiaries[editDiaryIndex].content = inputText
             setEditDiaryIndex(-1)
-        } 
-        // user response
+        }
+        // user write new
         else {
-            const lastDiary = newDiaries[newDiaries.length - 1]
+            const lastDiary = newDiaries[0]
             const lastDiaryTime = lastDiary?.time
             const currentTime = new Date()
             const duration = currentTime.getTime() - lastDiaryTime?.getTime()
 
-            if (duration > 10800000 || !lastDiary) {
-                newDiaries.unshift({
-                    time: new Date,
-                    content: inputText,
-                    emotions: []
-                })
-            } else {
+            // if (duration > DIARY_DURATION || !lastDiary) {
+            //     newDiaries.unshift({
+            //         time: new Date,
+            //         content: inputText,
+            //     })
+            // } else {
                 lastDiary.content += "\n\n" + inputText
-            }
+            // }
             getPrompt(inputText)
         }
 
@@ -70,8 +72,7 @@ const Landing: React.FC = () => {
     }
 
     const confirmDetele = (index: number) => {
-        console.log(index)
-        const newDiaries = diaries.filter((e, i) => i !==index)
+        const newDiaries = diaries.filter((e, i) => i !== index)
         setDiaries(newDiaries)
         localStorage.setItem(DIARY_STORAGE_KEY, JSON.stringify(newDiaries))
         message.success("Deleted");
@@ -82,36 +83,51 @@ const Landing: React.FC = () => {
     };
 
     const getPrompt = (inputText: string) => {
+        setLoading(true)
+        console.log(inputText)
         axios.post(`${BACKEND.DOMAIN}/api/chat`, {
             prompts: `
                 You are my friend who want to listen to my feeling and situation that I went throught.
-                give me a question to figure out my situation based on my emotion or the exprience that I told you.
+                give me a question which is no more than 30 words to figure out my situation based on my emotion or the exprience that I told you.
                 This is what I tell you "${inputText}"
             `
         }).then(res => {
-            console.log(res.data.data)
             setQuestion({
                 q: res.data.data
             })
         })
-        .catch(err => {
-            console.log(err)
-        })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => setLoading(false))
     }
 
     useEffect(() => {
         const _diaries = localStorage.getItem(DIARY_STORAGE_KEY)
-        if (_diaries) {
+        if (_diaries && _diaries.length > 0) {
             const convertTime = JSON.parse(_diaries).map(e => ({
                 ...e,
                 time: new Date(e.time)
             }))
-            setDiaries(convertTime)
-        }
 
-        const _q = localStorage.getItem(QUESTIONS_STORAGE_KEY)
-        setQuestion(_q ? JSON.parse(_q) : initialQuestion)
-        // localStorage.setItem(DIARY_STORAGE_KEY, JSON.stringify(diaries))
+            const lastDiary = convertTime[0]
+            const lastDiaryTime = lastDiary?.time
+            const currentTime = new Date()
+            const duration = currentTime.getTime() - lastDiaryTime?.getTime()
+
+            console.log(lastDiary)
+            console.log(currentTime)
+            console.log(duration)
+
+            if (duration > DIARY_DURATION) {
+                navigate("/");
+            }
+
+            setDiaries(convertTime)
+            getPrompt(lastDiary.content)
+        } else {
+            navigate("/")
+        }
     }, [])
 
     return (
@@ -127,11 +143,17 @@ const Landing: React.FC = () => {
                         </Link>
                     </div>
                     <div className="pt-6 flex mt-2">
-                        <div className="rounded-full h-10 w-10 overflow-hidden mr-2">
+                        <div className="rounded-full h-6 w-6 overflow-hidden mr-2">
                             <img src="/assets/avatar.jpg" alt="" className="" />
                         </div>
-                        <div className="bg-indigo-500 rounded-xl pt-3 pb-4 px-4 rounded-tl-none text-white">
-                            {question?.q}
+                        <div className="flex-1 bg-indigo-500 rounded-xl pt-3 pb-4 px-4 rounded-tl-none text-white">
+                            <Skeleton loading={loading} active 
+                            paragraph={{
+                                rows: 2
+                            }}
+                            title={false}>
+                                {question?.q}
+                            </Skeleton>
                         </div>
                     </div>
 
@@ -140,9 +162,6 @@ const Landing: React.FC = () => {
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             autoSize={{ minRows: 4 }}
-                            // placeholder={
-                            //     question?.prompts?.toString()
-                            // }
                             className='w-full rounded-2xl hover:bg-indigo-50 bg-indigo-50 border-none p-4 pb-10'
                         />
                         <div className="flex space-x-4">
@@ -155,7 +174,7 @@ const Landing: React.FC = () => {
                             }
                             <button
                                 onClick={save}
-                                className='py-2 px-6 rounded-full border border-indigo-500 bg-indigo-500 text-white absolute right-2 bottom-3'>Save
+                                className='text-sm py-2 px-4 rounded-full border border-indigo-500 bg-indigo-500 text-white absolute right-2 bottom-3'>Save
                             </button>
                         </div>
                     </div>
