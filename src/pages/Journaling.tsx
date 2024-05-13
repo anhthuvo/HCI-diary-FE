@@ -225,7 +225,7 @@ const Landing: React.FC = () => {
                                     <div className={`rounded-2xl p-4 shadow-lg mb-4 relative ${BG_COLORS[e.emotion] || ""}`} key={i}>
                                         <EditOutlined className='right-4 top-4 absolute opacity-50' onClick={() => onEdit(i)} />
                                         <p className="text-slate-400 mb-2">{formatDate(e.time)}</p>
-                                        <ExpandCard initialExpand={i === 0}>
+                                        <ExpandCard initialExpand={i === 0} disabled={i === 0}>
                                             <p className="font-light"
                                                 dangerouslySetInnerHTML={{ __html: addBreakLine(e?.content) }}>
                                             </p>

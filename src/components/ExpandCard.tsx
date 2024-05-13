@@ -1,9 +1,10 @@
 import { useState } from "react";
 
-const ExpandCard = ({ children, initialExpand }) => {
+const ExpandCard = ({ children, initialExpand, disabled = false }) => {
     const [isExpand, setIsExpand] = useState(initialExpand)
 
     const expand = () => {
+        if (disabled) return
         setIsExpand(!isExpand)
     }
 
