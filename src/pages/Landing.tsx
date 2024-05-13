@@ -58,7 +58,7 @@ const Landing: React.FC = () => {
   return (
     <div className="bg-black">
       <div className="max-w-md bg-white min-h-screen mx-auto relative">
-        <div className="container pb-10 pt-6">
+        <div className="container pb-20 pt-6">
           <p className="text-center text-slate-400 mb-6">Today - {getToday()}</p>
           <p className="font-normal text-2xl mb-6">How are you feeling today?</p>
 
@@ -88,11 +88,10 @@ const Landing: React.FC = () => {
             }
           </div>
 
-          <p className="font-normal text-2xl mb-6 mt-10">Describe your state of mind</p>
           <div
             className='w-full rounded-2xl hover:bg-indigo-50 bg-indigo-50 border-none p-4 font-light'
           >
-            This cutie assistant is here to offer guidance on diary writing, but feel free to ignore the prompts and focus on writing down your own thoughts.
+            <span className="text-red-500 font-medium">YOUR DATA IS SAFE</span>
             <br/>We don't collect your diary content. It's securely stored in your phone's memory, so feel free to write your thoughts.
           </div>
         </div>
