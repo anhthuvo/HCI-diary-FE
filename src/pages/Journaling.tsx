@@ -178,7 +178,7 @@ const Landing: React.FC = () => {
                             <img src="/assets/avatar.jpg" alt="" className="" />
                         </div>
                         <div className="flex-1 bg-indigo-500 rounded-xl pt-3 pb-4 px-6 rounded-tl-none text-white relative">
-                            <Skeleton loading={loading} active
+                            <Skeleton loading={loading || isMuted} active={!isMuted}
                                 paragraph={{
                                     rows: 2
                                 }}
