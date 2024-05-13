@@ -9,10 +9,10 @@ import type { PopconfirmProps } from 'antd';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
-interface IDiary {
+export interface IDiary {
     time: Date,
     content: string,
-    emotion?: string
+    emotion?: string,
 }
 
 interface IQuestion {
@@ -43,7 +43,7 @@ const Landing: React.FC = () => {
             const lastDiary = newDiaries[0]
             const lastDiaryTime = lastDiary?.time
             const currentTime = new Date()
-            const duration = currentTime.getTime() - lastDiaryTime?.getTime()
+            // const duration = currentTime.getTime() - lastDiaryTime?.getTime()
 
             // if (duration > DIARY_DURATION || !lastDiary) {
             //     newDiaries.unshift({
@@ -51,7 +51,7 @@ const Landing: React.FC = () => {
             //         content: inputText,
             //     })
             // } else {
-                lastDiary.content += "\n\n" + inputText
+            lastDiary.content += "\n\n" + inputText
             // }
             getPrompt(inputText)
         }
@@ -87,9 +87,9 @@ const Landing: React.FC = () => {
         console.log(inputText)
         axios.post(`${BACKEND.DOMAIN}/api/chat`, {
             prompts: `
-                You are my friend who want to listen to my feeling and situation that I went throught.
-                give me a question which is no more than 30 words to figure out my situation based on my emotion or the exprience that I told you.
-                This is what I tell you "${inputText}"
+            You are an assistant that is helping create responses for a self-journaling application. The intended user are graduate students at a top institution.
+            You give a prompt which aim to figure out user situation based on user emotion or the experience that user told you. The prompt should have a greater sense of personality, relationality, to solicit rich narratives. Should be less than 250 characters. The prompt should not use over-the-top words. Only conversational language. Do not include any "tip: " "question: " etc and do not use hashtags. You do not give any prefix such as "prompt" and do not use double quotes at the start and end of the response. You should ask only one question at a time.
+            This is what user tell you "${inputText}"            
             `
         }).then(res => {
             setQuestion({
@@ -147,11 +147,11 @@ const Landing: React.FC = () => {
                             <img src="/assets/avatar.jpg" alt="" className="" />
                         </div>
                         <div className="flex-1 bg-indigo-500 rounded-xl pt-3 pb-4 px-4 rounded-tl-none text-white">
-                            <Skeleton loading={loading} active 
-                            paragraph={{
-                                rows: 2
-                            }}
-                            title={false}>
+                            <Skeleton loading={loading} active
+                                paragraph={{
+                                    rows: 2
+                                }}
+                                title={false}>
                                 {question?.q}
                             </Skeleton>
                         </div>

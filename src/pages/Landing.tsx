@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { DIARY_DURATION, DIARY_STORAGE_KEY, EMOTIONS, MONTHS, WEEKDAYS } from '../constant'
 import { Link } from 'react-router-dom';
+import { IDiary } from './Journaling'
 
 const Landing: React.FC = () => {
   const [emotions, setEmotions] = useState(EMOTIONS)
@@ -27,7 +28,7 @@ const Landing: React.FC = () => {
   const saveEmotion = () => {
     const inputText = `Today I feel ${emotion.current.label} ${emotion.current.emoji}`
     const _diaries = localStorage.getItem(DIARY_STORAGE_KEY)
-    let saveDiaries = []
+    let saveDiaries: IDiary[] = []
     if (_diaries && _diaries.length > 0) {
       saveDiaries = JSON.parse(_diaries).map(e => ({
         ...e,
@@ -77,7 +78,6 @@ const Landing: React.FC = () => {
                         <div className="w-1/2 h-1/2 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-2/3 text-3xl">
                           {e.emoji}
                         </div>
-                        {/* <img src={e.icon} className='w-1/2 h-1/2 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-2/3' /> */}
                         <p className={`absolute bottom-1.5 w-full text-center capitalize font-light text-xs`}>{e.label}</p>
                       </div>
                     ))

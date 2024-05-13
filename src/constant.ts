@@ -66,9 +66,7 @@ export const EMOTIONS = [
     ]
   }
 ]
-
 export const BACKEND = {
   DOMAIN: "https://diary-chatbot.adaptable.app"
 }
-
 export const DIARY_DURATION = 10800000
