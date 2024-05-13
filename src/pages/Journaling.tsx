@@ -98,7 +98,7 @@ const Landing: React.FC = () => {
         } else if (state === 2) {
             prompts = `
             ${prompt_rules.general_rules}
-            If user shows negative motion, show your sympathy and encourage them to move on and then you ask user what they plan to do tomorrow.
+            If user shows negative motion, show your sympathy and encourage them to move on and then you ask user what they plan to do tomorrow because it is useful for their reflection.
             This is what user tell you "${inputText}"
             `
         } else if (state === 3) {
