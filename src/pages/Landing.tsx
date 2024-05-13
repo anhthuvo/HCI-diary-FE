@@ -26,6 +26,7 @@ const Landing: React.FC = () => {
   }
 
   const saveEmotion = () => {
+    if (!emotion.current) return
     const inputText = `Today I feel ${emotion.current.label} ${emotion.current.emoji}`
     const _diaries = localStorage.getItem(DIARY_STORAGE_KEY)
     let saveDiaries: IDiary[] = []
@@ -36,15 +37,15 @@ const Landing: React.FC = () => {
       }))
 
       saveDiaries.unshift({
-        time: new Date,
+        time: new Date(),
         content: inputText,
-        emotion: emotion.current.label
+        emotion: emotion.current?.label || ""
       })
     } else {
       saveDiaries = [{
-        time: new Date,
+        time: new Date(),
         content: inputText,
-        emotion: emotion.current.label
+        emotion: emotion.current?.label || ""
       }]
     }
     localStorage.setItem(DIARY_STORAGE_KEY, JSON.stringify(saveDiaries))
@@ -91,21 +92,17 @@ const Landing: React.FC = () => {
           <div
             className='w-full rounded-2xl hover:bg-indigo-50 bg-indigo-50 border-none p-4 font-light'
           >
-            Today I'm happy. I'm a little nervous
-            about exams, but I try to prepare a little
-            bit every day. I'm going to visit Adam
-            tomorrow. I'm glad we made up :)
-            My basketball coach said I was making
-            progress. We're still at odds with Olivia.
-            Why is it so hard for us to be together?
-            How can I fix this?
+            This cutie assistant is here to offer guidance on diary writing, but feel free to ignore the prompts and focus on writing down your own thoughts.
+            <br/>We don't collect your diary content. It's securely stored in your phone's memory, so feel free to write your thoughts.
           </div>
         </div>
-        {unclock ? <div className="fixed bottom-0 left-0 w-full p-4 pt-0 bg-white">
-          <Link to="/journaling" className=''>
-            <div className="w-full bg-indigo-500 text-white text-center rounded-2xl py-4 text-lg">Go to my diary</div>
-          </Link>
-        </div> : null
+        {unclock ? (
+          <div className="fixed bottom-0 w-full max-w-md mx-auto p-4 pt-0 bg-white">
+            <Link to="/journaling" className=''>
+              <div className="w-full bg-indigo-500 text-white text-center rounded-2xl py-4 text-lg">Go to my diary</div>
+            </Link>
+          </div>
+        ) : null
         }
       </div>
     </div>
