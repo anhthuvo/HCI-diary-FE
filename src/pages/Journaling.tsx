@@ -113,8 +113,8 @@ const Landing: React.FC = () => {
             return
         } else {
             prompts = `
-                ${prompt_rules.general_rules}
-                give a question to figure out user's situation based on their emotion or the exprience that user told you.
+                You are a friend who want to listen to my feeling and situation that I went throught.
+                give me a question which is no more than 30 words to figure out my situation based on my emotion or the exprience that I told you.
                 This is what user tell you "${inputText}"
             `
         }
@@ -177,7 +177,7 @@ const Landing: React.FC = () => {
                         <div className="rounded-full h-6 w-6 overflow-hidden mr-2">
                             <img src="/assets/avatar.jpg" alt="" className="" />
                         </div>
-                        <div className="flex-1 bg-indigo-500 rounded-xl pt-3 pb-4 px-6 rounded-tl-none text-white relative">
+                        <div className="flex-1 bg-indigo-500 rounded-xl pt-3 pb-4 pl-4 pr-6 rounded-tl-none text-white relative">
                             <Skeleton loading={loading || isMuted} active={!isMuted}
                                 paragraph={{
                                     rows: 2
@@ -253,7 +253,7 @@ const Landing: React.FC = () => {
                     </div>
                 </Link>
             </div>
-            <div className="bg-lime-100 bg-lime-200 bg-lime-300 bg-slate-300 bg-purple-200 bg-purple-600 bg-amber-50"></div>
+            <div className="bg-lime-100 bg-lime-200 bg-lime-300 bg-slate-100 bg-purple-200 bg-purple-300 bg-amber-50"></div>
         </div>
     );
 };

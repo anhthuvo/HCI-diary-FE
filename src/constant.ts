@@ -77,8 +77,8 @@ export const BG_COLORS = {
     "relaxed": "bg-lime-100",
     "happy": "bg-lime-200",
     "excited": "bg-lime-300",
-    "tired": "bg-slate-300",
+    "tired": "bg-slate-100",
     "sad": "bg-purple-200",
-    "stressed": "bg-purple-600",
+    "stressed": "bg-purple-300",
     "neutral": "bg-amber-50"
 }
