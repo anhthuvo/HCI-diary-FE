@@ -115,7 +115,7 @@ const Landing: React.FC = () => {
             prompts = `
                 You are a friend who want to listen to my feeling and situation that I went throught.
                 give me a question which is no more than 30 words to figure out my situation based on my emotion or the exprience that I told you.
-                This is what user tell you "${inputText}"
+                This is what I tell you "${inputText}"
             `
         }
 
