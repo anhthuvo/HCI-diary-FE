@@ -10,6 +10,12 @@ export const EMOTIONS = [
     label: "positive",
     options: [
       {
+        icon: '/assets/emotion-icon-happy.webp',
+        label: "fine",
+        emoji: "😐",
+        selected: false,
+      },
+      {
         label: "relaxed",
         emoji: "😌",
         selected: false,
@@ -30,6 +36,11 @@ export const EMOTIONS = [
     label: "negative",
     options: [
       {
+        label: "bored",
+        emoji: "🥱",
+        selected: false,
+      },
+      {
         label: "tired",
         emoji: "😣",
         selected: false,
@@ -45,24 +56,19 @@ export const EMOTIONS = [
         label: "stressed",
         emoji: "😩",
         selected: false,
-      }
-    ]
-  },
-  {
-    label: "neutral",
-    options: [
+      },
       {
-        icon: '/assets/emotion-icon-happy.webp',
-        label: "neutral",
-        emoji: "😐",
+        icon: '/assets/emotion-icon-stressed.png',
+        label: "depressed",
+        emoji: "😢",
         selected: false,
       },
-      // {
-      //   icon: '/assets/emotion-icon-happy.webp',
-      //   label: "relaxed",
-      //   emoji: "😐",
-      //   selected: false,
-      // }
+      {
+        icon: '/assets/emotion-icon-stressed.png',
+        label: "angry",
+        emoji: "😡",
+        selected: false,
+      },
     ]
   }
 ]
@@ -80,5 +86,7 @@ export const BG_COLORS = {
     "tired": "bg-slate-100",
     "sad": "bg-purple-200",
     "stressed": "bg-purple-300",
-    "neutral": "bg-amber-50"
+    "neutral": "bg-amber-50",
+    "depressed": "bg-purple-300",
+    "angry": "bg-orange-300"
 }

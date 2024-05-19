@@ -27,7 +27,7 @@ const Landing: React.FC = () => {
 
   const saveEmotion = () => {
     if (!emotion.current) return
-    const inputText = `Today I feel ${emotion.current.label} ${emotion.current.emoji}`
+    const inputText = `${emotion.current.label.toUpperCase()} ${emotion.current.emoji}`
     const _diaries = localStorage.getItem(DIARY_STORAGE_KEY)
     let saveDiaries: IDiary[] = []
     if (_diaries && _diaries.length > 0) {
@@ -60,16 +60,11 @@ const Landing: React.FC = () => {
       <div className="max-w-md bg-white min-h-screen mx-auto relative">
         <div className="container pb-20 pt-6">
           <p className="text-center text-slate-400 mb-6">Today - {getToday()}</p>
-          <p className="font-normal text-2xl mb-6">How are you feeling today?</p>
+          <p className="font-normal text-2xl mb-6">How are you feeling?</p>
 
-          <div className="">
+          <div className="grid grid-cols-4 gap-4 mb-4">
             {
               EMOTIONS.map((category, index) => (
-                <div className="grid grid-cols-4 gap-4 mb-4" key={index}>
-                  <div className="rounded-xl text-left flex h-full items-center capitalize">
-                    {category.label}
-                  </div>
-                  {
                     category.options.map((e, i) => (
                       <div
                         key={i}
@@ -82,8 +77,6 @@ const Landing: React.FC = () => {
                         <p className={`absolute bottom-1.5 w-full text-center capitalize font-light text-xs`}>{e.label}</p>
                       </div>
                     ))
-                  }
-                </div>
               ))
             }
           </div>
