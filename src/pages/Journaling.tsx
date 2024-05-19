@@ -45,7 +45,11 @@ const Landing: React.FC = () => {
         // user write new
         else {
             const lastDiary = newDiaries[0]
-            lastDiary.content += `\n\n <small>${question.q}</small>\n ${inputText}`
+            if (isMuted) {
+                lastDiary.content += `\n ${inputText}`
+            } else {
+                lastDiary.content += `\n <small>${question.q}</small>\n ${inputText}`
+            }
             getPrompt(inputText)
         }
 
@@ -96,12 +100,12 @@ const Landing: React.FC = () => {
                 break;
             case 4:
                 prompts = `${prompt_rules.general_rules}
-                You give a prompt to make user think about obstacles have user encountered while they work.
+                You give a prompt to make user think about difficulties have user faced while they work.
                 This is what user tell you "${inputText}"`
                 break;
             case 5:
                 prompts = `${prompt_rules.general_rules}
-                You give a prompt to make user think about how they can overcome obstacles.
+                You give a prompt to make user think about how they can overcome difficulty they mentioned.
                 This is what user tell you "${inputText}"`
                 break;
             case 6:
@@ -189,7 +193,7 @@ return (
                             title={false}>
                             {question?.q}
                         </Skeleton>
-                        {state > 3 ? <div className="absolute bottom-2 right-2" onClick={handleMute}>
+                        {state > 6 ? <div className="absolute bottom-2 right-2" onClick={handleMute}>
                             <Mute isMuted={isMuted} />
                         </div> : null
                         }
