@@ -27,7 +27,7 @@ const Landing: React.FC = () => {
     const [editDiaryIndex, setEditDiaryIndex] = useState<number>(-1)
     const [loading, setLoading] = useState(false)
     const [state, setState] = useState<number>(0)
-    const [isMuted, setIsMuted] = useState<boolean>(false)
+    const [isMuted, setIsMuted] = useState<boolean>(true)
 
     const navigate = useNavigate();
 
@@ -179,9 +179,10 @@ return (
         <div className="max-w-md bg-white min-h-screen mx-auto relative">
             <div className="container py-10">
                 <div className="flex justify-between items-center">
-                    <p className="font-semibold text-4xl">My Diary</p>
+                    <p className="font-semibold text-4xl mb-6">My Diary</p>
                 </div>
-                <div className="pt-6 flex mt-2">
+                <p className="font-semibold text-2xl">How was your day?</p>
+                {/* <div className="pt-6 flex mt-2">
                     <div className="rounded-full h-6 w-6 overflow-hidden mr-2">
                         <img src="/assets/avatar.jpg" alt="" className="" />
                     </div>
@@ -198,7 +199,7 @@ return (
                         </div> : null
                         }
                     </div>
-                </div>
+                </div> */}
 
                 <div className="mt-4 relative">
                     <TextArea
