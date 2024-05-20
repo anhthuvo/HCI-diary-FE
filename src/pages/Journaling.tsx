@@ -86,7 +86,7 @@ const Landing: React.FC = () => {
                 break;
             case 1:
                 prompts = `${prompt_rules.general_rules}
-                You give a prompt to figure out why user feel that way during situations that user told you.
+                You give a prompt to figure out user feeling during experience that user told you.
                 This is what user tell you "${inputText}"`
                 break;
             case 2:
