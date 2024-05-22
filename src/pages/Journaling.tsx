@@ -181,7 +181,7 @@ return (
                 <div className="flex justify-between items-center">
                     <p className="font-semibold text-4xl mb-6">My Diary</p>
                 </div>
-                <p className="font-semibold text-2xl">How was your day?</p>
+                <p className="font-semibold text-2xl mt-6">How was your day?</p>
                 {/* <div className="pt-6 flex mt-2">
                     <div className="rounded-full h-6 w-6 overflow-hidden mr-2">
                         <img src="/assets/avatar.jpg" alt="" className="" />
