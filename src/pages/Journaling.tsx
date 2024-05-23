@@ -84,7 +84,7 @@ const Landing: React.FC = () => {
         if (turn.current === 0 && topicNum.current === 0) {
             prompts = `${prompt_rules.general_rules}
             Give a positive comment on what I told you and give a question to find out my situation lead to their emotion.
-            This is what I tell you "${diaries?.[0]?.content || inputText}"`
+            This is what I tell you "${inputText}"`
         }
         if (turn.current < 2) {
             prompts = `${prompt_rules.general_rules}
