@@ -1,5 +1,5 @@
 export const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"]
-export const WEEKDAYS = ['Sun', 'Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Sat']
+export const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']
 export const DIARY_STORAGE_KEY = 'diaries'
 export const QUESTIONS_STORAGE_KEY = 'question'
 export const initialQuestion = {
@@ -77,7 +77,7 @@ export const BACKEND = {
 }
 export const DIARY_DURATION = 10800000
 export const prompt_rules = {
-  general_rules: `You are an assistant that is helping create responses for a self-journaling application. The intended user are graduate students at a top institution. The prompt should have a greater sense of personality, relationality, to solicit rich narratives. Should be less than 150 characters. The prompt do not use over-the-top words. Only conversational language. Do not include any "tip: " "question: " etc and do not use hashtags. You do not give any prefix such as "prompt" and do not use double quotes at the start and end of the response. You should give prompt about only one thing at a time and do not prompt as a question format. You make it like friendly command.`
+  general_rules: `You are my lovely friend who care about my feeling and situation that I went throught. Your question should have a greater sense of personality, relationality, to solicit rich narratives. Should be less than 150 characters. The question do not use over-the-top words. Only conversational language. Do not include any "tip: " "question: " etc and do not use hashtags. You do not give any prefix such as "prompt" and do not use double quotes at the start and end of the response.`
 }
 export const BG_COLORS = {
     "relaxed": "bg-lime-100",

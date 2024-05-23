@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BACKEND, BG_COLORS, DIARY_DURATION, DIARY_STORAGE_KEY, prompt_rules } from '../constant'
 import TextArea from 'antd/es/input/TextArea';
-import { DeleteOutlined, EditOutlined, PlusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, ForwardOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { formatDate } from './Landing';
 import { Link } from 'react-router-dom';
 import { Popconfirm, Skeleton, message } from 'antd';
@@ -26,8 +26,9 @@ const Landing: React.FC = () => {
     const [input, setInput] = useState('');
     const [editDiaryIndex, setEditDiaryIndex] = useState<number>(-1)
     const [loading, setLoading] = useState(false)
-    const [state, setState] = useState<number>(0)
-    const [isMuted, setIsMuted] = useState<boolean>(true)
+    const topicNum = useRef(0)
+    const turn = useRef(0)
+    const [isMuted, setIsMuted] = useState<boolean>(false)
 
     const navigate = useNavigate();
 
@@ -50,6 +51,7 @@ const Landing: React.FC = () => {
             } else {
                 lastDiary.content += `\n <small>${question.q}</small>\n ${inputText}`
             }
+            turn.current += 1
             getPrompt(inputText)
         }
 
@@ -75,79 +77,71 @@ const Landing: React.FC = () => {
         message.success("Deleted");
     };
 
-    const getPrompt = async (inputText: string) => {
+    const getPrompt = async (inputText: string = "") => {
         if (isMuted) return
+        console.log(topicNum.current, turn.current, inputText)
         let prompts = ""
-        switch (state) {
-            case 0:
-                prompts = `${prompt_rules.general_rules}
-                You give a prompt which aim to figure out user situations based on user emotion that user told you.
-                This is user emotion "${inputText}"`
-                break;
-            case 1:
-                prompts = `${prompt_rules.general_rules}
-                You give a prompt to figure out user feeling during experience that user told you.
-                This is what user tell you "${inputText}"`
-                break;
-            case 2:
-                prompts = `${prompt_rules.general_rules}
-                You give a prompt to make user think about how they can improve their feelings.
-                This is what user tell you "${inputText}"`
-                break;
-            case 3:
-                prompts = `${prompt_rules.general_rules}
-                You give a prompt to make user think about the progress they made today. For example, complete homework, make progress in project.`
-                break;
-            case 4:
-                prompts = `${prompt_rules.general_rules}
-                You give a prompt to make user think about difficulties have user faced while they work.
-                This is what user tell you "${inputText}"`
-                break;
-            case 5:
-                prompts = `${prompt_rules.general_rules}
-                You give a prompt to make user think about how they can overcome difficulty they mentioned.
-                This is what user tell you "${inputText}"`
-                break;
-            case 6:
-                prompts = `${prompt_rules.general_rules}
-                Give a positive comment on what user told you then you ask user what they plan to do tomorrow because it is useful for their reflection.
-                This is what user tell you "${inputText}"`
-                break;
-            case 7:
-                setQuestion({
-                    q: `If you still have something to write down, feel free to express it or click "End Diary". If you want to focus on your own thoughts, you can mute me.`
-                })
-                setState(state + 1)
-                return;
-            default:
-                prompts = `
-                ${prompt_rules.general_rules}
-                give a question to figure out user's situation based on their emotion or the exprience that user told you.
-                This is what user tell you "${inputText}"
-                `
+        if (turn.current === 0 && topicNum.current === 0) {
+            prompts = `${prompt_rules.general_rules}
+            Give a positive comment on what I told you and give a question to find out my situation lead to their emotion.
+            This is what I tell you "${inputText}"`
+        }
+        if (turn.current < 3) {
+            prompts = `${prompt_rules.general_rules}
+            Give a positive comment on what I told you and give a question to ask about my situation based on their emotion or the exprience that I told you.
+            This is what I tell you "${inputText}"`
+        } else if (topicNum.current < 3) { // more than 3 turns for 1 topic => change topic
+            turn.current = 0
+            topicNum.current += 1
+            prompts = `${prompt_rules.general_rules}
+            Select one of these topics that did not mentioned in the dialog and ask if I want to share about it. You can start the question with something like "Do you want to share". Don't repeat the last question.
+            Topic: friends, coursework, labworks, what make my happy today, family, project progress.
+            This is the dialog "${diaries[0].content}"
+            Last question: ${question.q}`
+            
+        } else if (topicNum.current === 3) {
+            topicNum.current += 1
+            turn.current = 3
+            prompts = `${prompt_rules.general_rules}
+            Give a positive comment only if I told you something otherwise, do not comment.
+            Then you ask me what they plan to do tomorrow because it is useful for their reflection.
+            This is what I tell you "${inputText}"`
+            setInput(`My tomorrow plan:\n•\n•\n•`)
+        } else if (topicNum.current === 4) {
+            topicNum.current += 1
+            turn.current = 3
+            setQuestion({
+                q: `If you still have something to write down, feel free to express it or click "End Diary".`
+            })
+            return;
+        } else {
+            prompts = `${prompt_rules.general_rules}
+            give a positive comment and give a question to figure out my situation based on their emotion or the exprience that I told you.
+            This is what I tell you "${inputText}"`
         }
 
-try {
-    setLoading(true)
-    const res = await axios.post(`${BACKEND.DOMAIN}/api/chat`, {
-        prompts
-    })
-    setQuestion({
-        q: res.data.data
-    })
-    setState(state + 1)
-    if (state === 6) {
-        setInput(`My tomorrow plan:\n•\n•\n•`)
-    }
-} catch (err) {
-    console.log(err)
-} finally {
-    setLoading(false)
-}
+        try {
+            setLoading(true)
+            const res = await axios.post(`${BACKEND.DOMAIN}/api/chat`, {
+                prompts
+            })
+            setQuestion({
+                q: res.data.data
+            })
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setLoading(false)
+        }
     }
 
 const handleMute = () => {
     setIsMuted(!isMuted)
+}
+
+const skipQuestion = () => {
+    turn.current = 3
+    getPrompt()
 }
 
 useEffect(() => {
@@ -179,10 +173,9 @@ return (
         <div className="max-w-md bg-white min-h-screen mx-auto relative">
             <div className="container py-10">
                 <div className="flex justify-between items-center">
-                    <p className="font-semibold text-4xl mb-6">My Diary</p>
+                    <p className="font-semibold text-4xl">My Diary</p>
                 </div>
-                <p className="font-semibold text-2xl mt-6">How was your day?</p>
-                {/* <div className="pt-6 flex mt-2">
+                <div className="pt-6 flex mt-2">
                     <div className="rounded-full h-6 w-6 overflow-hidden mr-2">
                         <img src="/assets/avatar.jpg" alt="" className="" />
                     </div>
@@ -194,12 +187,16 @@ return (
                             title={false}>
                             {question?.q}
                         </Skeleton>
-                        {state > 6 ? <div className="absolute bottom-2 right-2" onClick={handleMute}>
-                            <Mute isMuted={isMuted} />
-                        </div> : null
-                        }
                     </div>
-                </div> */}
+                    <div className='ml-2 w-10'>
+                        <div className="bg-slate-200 rounded-lg h-10 flex justify-center items-center mb-2" onClick={handleMute}>
+                            <Mute isMuted={isMuted} />
+                        </div>
+                        <div className="bg-slate-200 rounded-lg h-10 flex justify-center items-center mb-2" onClick={skipQuestion}>
+                            <ForwardOutlined className='text-slate-400'/>
+                        </div>
+                    </div>
+                </div>
 
                 <div className="mt-4 relative">
                     <TextArea
@@ -211,7 +208,7 @@ return (
                     <div className="flex space-x-4">
                         {editDiaryIndex > -1 ? <button
                             onClick={cancelEdit}
-                            className='py-2 px-6 rounded-full border border-indigo-500 text-indigo-500 absolute right-24 bottom-3'
+                            className='py-2 px-4 rounded-full border border-indigo-500 text-indigo-500 absolute right-24 bottom-3'
                         >
                             Cancel
                         </button> : null
