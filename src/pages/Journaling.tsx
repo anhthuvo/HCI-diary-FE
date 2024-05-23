@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { BACKEND, BG_COLORS, DIARY_DURATION, DIARY_STORAGE_KEY, prompt_rules } from '../constant'
+import { BACKEND, BG_COLORS, DIARY_DURATION, DIARY_STORAGE_KEY, QUESTIONS_STORAGE_KEY, prompt_rules } from '../constant'
 import TextArea from 'antd/es/input/TextArea';
 import { DeleteOutlined, EditOutlined, ForwardOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { formatDate } from './Landing';
@@ -142,6 +142,20 @@ const handleMute = () => {
 const skipQuestion = () => {
     turn.current = 3
     getPrompt()
+    try {
+        const _skip_question = localStorage.getItem(QUESTIONS_STORAGE_KEY)
+        let skip_question: string[] = []
+        if (_skip_question) {
+            skip_question = JSON.parse(_skip_question)
+            skip_question.push(question?.q || "")
+        } else {
+            skip_question = [question?.q || ""]
+        }
+        localStorage.setItem(QUESTIONS_STORAGE_KEY, JSON.stringify(skip_question))
+    } catch(err) {
+        console.log(err)
+    }
+
 }
 
 useEffect(() => {

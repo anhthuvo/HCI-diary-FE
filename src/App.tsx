@@ -6,6 +6,7 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
+import SkipQuestion from './pages/SkipQuestion';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/journaling" element={<Journaling />} />
+        <Route path="/skip" element={<SkipQuestion />} />
       </Routes>
     </BrowserRouter>
   );
