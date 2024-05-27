@@ -86,7 +86,7 @@ const Landing: React.FC = () => {
             Give a positive comment on what I told you and give a question to find out my situation lead to their emotion.
             This is what I tell you "${inputText}"`
         }
-        if (turn.current < 2) {
+        else if (turn.current < 2) {
             prompts = `${prompt_rules.general_rules}
             Give a positive comment on what I told you and give a question to ask about my situation based on their emotion or the exprience that I told you.
             This is what I tell you "${inputText}"`
