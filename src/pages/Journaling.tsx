@@ -88,7 +88,7 @@ const Landing: React.FC = () => {
         }
         else if (turn.current < 2) {
             prompts = `${prompt_rules.general_rules}
-            Give a positive comment on what I told you and give a question to ask about my situation based on their emotion or the exprience that I told you.
+            Give a positive comment on what I told you and give a question to ask about my situation based on their emotion or the experience that I told you.
             This is what I tell you "${inputText}"`
         } else if (topicNum.current < 3) {
             turn.current = 0
