@@ -90,7 +90,7 @@ const Landing: React.FC = () => {
             prompts = `${prompt_rules.general_rules}
             Give a positive comment on what I told you and give a question to ask about my situation based on their emotion or the exprience that I told you.
             This is what I tell you "${inputText}"`
-        } else if (topicNum.current < 2) { // more than 3 turns for 1 topic => change topic
+        } else if (topicNum.current < 3) {
             turn.current = 0
             topicNum.current += 1
             prompts = `${prompt_rules.general_rules}
@@ -99,7 +99,7 @@ const Landing: React.FC = () => {
             This is the dialog "${diaries[0].content}"
             Last question: ${question.q}`
             
-        } else if (topicNum.current === 2) {
+        } else if (topicNum.current === 3) {
             topicNum.current += 1
             turn.current = 3
             prompts = `${prompt_rules.general_rules}
@@ -107,7 +107,7 @@ const Landing: React.FC = () => {
             Then you ask me what they plan to do tomorrow because it is useful for their reflection.
             This is what I tell you "${inputText}"`
             setInput(`My tomorrow plan:\n•\n•\n•`)
-        } else if (topicNum.current === 3) {
+        } else if (topicNum.current === 4) {
             topicNum.current += 1
             turn.current = 3
             setQuestion({
