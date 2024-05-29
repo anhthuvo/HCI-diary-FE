@@ -81,45 +81,48 @@ const Landing: React.FC = () => {
         if (isMuted) return
         console.log(topicNum.current, turn.current, inputText)
         let prompts = ""
-        if (turn.current === 0 && topicNum.current === 0) {
-            prompts = `${prompt_rules.general_rules}
-            Give a positive comment on what I told you and give a question to find out my situation lead to their emotion.
-            This is what I tell you "${inputText}"`
-        }
-        else if (turn.current < 2) {
-            prompts = `${prompt_rules.general_rules}
-            Give a positive comment on what I told you and give a question to ask about my situation based on their emotion or the experience that I told you.
-            This is what I tell you "${inputText}"`
-        } else if (topicNum.current < 3) {
-            turn.current = 0
-            topicNum.current += 1
-            prompts = `${prompt_rules.general_rules}
-            Select one of these topics that did not mentioned in the dialog and ask if I want to share about it. You can start the question with something like "Do you want to share". Don't repeat the last question.
-            Topic: friends, coursework, labworks, what make my happy today, family, project progress.
-            This is the dialog "${diaries[0].content}"
-            Last question: ${question.q}`
+        // if (turn.current === 0 && topicNum.current === 0) {
+        //     prompts = `${prompt_rules.general_rules}
+        //     Give a positive comment on what I told you and give a question to find out my situation lead to their emotion.
+        //     This is what I tell you "${inputText}"`
+        // }
+        // else if (turn.current < 2) {
+        //     prompts = `${prompt_rules.general_rules}
+        //     Give a positive comment on what I told you and give a question to ask about my situation based on their emotion or the experience that I told you.
+        //     This is what I tell you "${inputText}"`
+        // } else if (topicNum.current < 3) {
+        //     turn.current = 0
+        //     topicNum.current += 1
+        //     prompts = `${prompt_rules.general_rules}
+        //     Select one of these topics that did not mentioned in the dialog and ask if I want to share about it. You can start the question with something like "Do you want to share". Don't repeat the last question.
+        //     Topic: friends, coursework, labworks, what make my happy today, family, project progress.
+        //     This is the dialog "${diaries[0].content}"
+        //     Last question: ${question.q}`
             
-        } else if (topicNum.current === 3) {
-            topicNum.current += 1
-            turn.current = 3
-            prompts = `${prompt_rules.general_rules}
-            Give a positive comment only if I told you something otherwise, do not comment.
-            Then you ask me what they plan to do tomorrow because it is useful for their reflection.
-            This is what I tell you "${inputText}"`
-            setInput(`My tomorrow plan:\n•\n•\n•`)
-        } else if (topicNum.current === 4) {
-            topicNum.current += 1
-            turn.current = 3
-            setQuestion({
-                q: `If you still have something to write down, feel free to express it or click "End Diary".`
-            })
-            return;
-        } else {
+        // } else if (topicNum.current === 3) {
+        //     topicNum.current += 1
+        //     turn.current = 3
+        //     prompts = `${prompt_rules.general_rules}
+        //     Give a positive comment only if I told you something otherwise, do not comment.
+        //     Then you ask me what they plan to do tomorrow because it is useful for their reflection.
+        //     This is what I tell you "${inputText}"`
+        //     setInput(`My tomorrow plan:\n•\n•\n•`)
+        // } else if (topicNum.current === 4) {
+        //     topicNum.current += 1
+        //     turn.current = 3
+        //     setQuestion({
+        //         q: `If you still have something to write down, feel free to express it or click "End Diary".`
+        //     })
+        //     return;
+        // } else {
+        //     prompts = `${prompt_rules.general_rules}
+        //     give a positive comment and give a question to figure out my situation based on their emotion or the exprience that I told you.
+        //     This is what I tell you "${inputText}"`
+        // }
+
             prompts = `${prompt_rules.general_rules}
             give a positive comment and give a question to figure out my situation based on their emotion or the exprience that I told you.
             This is what I tell you "${inputText}"`
-        }
-
         try {
             setLoading(true)
             const res = await axios.post(`${BACKEND.DOMAIN}/api/chat`, {
